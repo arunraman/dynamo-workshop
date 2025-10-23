@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  jupyter:
+    build: .
+    image: dynamo-workshop:latest
+    container_name: dynamo-workshop-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    environment:
+      - JUPYTER_ENABLE_LAB=no
+    stdin_open: true
+    tty: true
+

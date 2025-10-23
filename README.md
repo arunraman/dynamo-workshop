@@ -48,6 +48,30 @@ Before starting this workshop, ensure you have:
 
 ## Getting Started
 
+### Option 1: Using Docker (Recommended)
+
+1. Clone this repository:
+```bash
+git clone <repository-url>
+cd dynamo-workshop
+```
+
+2. Start the workshop environment:
+```bash
+./start-workshop.sh
+```
+
+3. Open your browser to `http://localhost:8888`
+
+4. Navigate to the lab notebooks and start with Lab 1
+
+5. When finished, stop the environment:
+```bash
+docker-compose down
+```
+
+### Option 2: Local Installation
+
 1. Clone this repository:
 ```bash
 git clone <repository-url>
@@ -56,7 +80,7 @@ cd dynamo-workshop
 
 2. Install Jupyter:
 ```bash
-pip install jupyter notebook ipykernel
+pip install jupyter notebook ipykernel requests pyyaml
 ```
 
 3. Start with Lab 1:

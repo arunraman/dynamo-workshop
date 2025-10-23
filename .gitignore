@@ -16,6 +16,9 @@ lab3-env/
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
+# Docker
+.dockerignore
+
 # Models and data
 *.bin
 *.safetensors
