@@ -8,23 +8,26 @@ Dynamo is a high-performance, distributed LLM inference serving framework that s
 
 ## Workshop Structure
 
-### Lab 1: Introduction and Local Setup
+### Lab 1: Introduction and Docker-Based Deployment
 - Understanding Dynamo architecture
 - Setting up local development environment
-- Running Dynamo components locally
-- Basic inference requests
+- Docker-based aggregated deployment
+- Backend engine selection (vLLM/SGLang/TensorRT-LLM)
+- Benchmarking with AI-Perf
 
-### Lab 2: Kubernetes Deployment
+### Lab 2: Advanced Kubernetes Deployment
 - Deploying Dynamo on Kubernetes
-- Configuring etcd and NATS
-- Deploying workers with different engines
-- Load balancing and routing
+- Installing Dynamo operator
+- Aggregated and disaggregated serving topologies
+- Multi-model deployment with shared frontend
+- AI Configurator for optimal configurations
 
-### Lab 3: Advanced Features and Optimization
-- Disaggregated serving (KV cache separation)
-- Multi-model serving
-- Monitoring and observability
-- Performance tuning and benchmarking
+### Lab 3: Wide EP Deployments and KVBM
+- Wide EP (Elastic Parallelism) multi-node deployments
+- KVBM (KV Cache Bandwidth Manager) deployment
+- Cache policy configuration and optimization
+- Performance measurement and comparison
+- Production considerations
 
 ## Prerequisites
 
@@ -93,9 +96,9 @@ jupyter notebook lab1-introduction-setup.ipynb
 
 | Lab | Topic | Duration | Notebook |
 |-----|-------|----------|----------|
-| Lab 1 | Introduction and Local Setup | 60 min | [lab1-introduction-setup.ipynb](lab1/lab1-introduction-setup.ipynb) |
-| Lab 2 | Kubernetes Deployment | 90 min | [lab2-kubernetes-deployment.ipynb](lab2/lab2-kubernetes-deployment.ipynb) |
-| Lab 3 | Advanced Features | 90 min | [lab3-advanced-features.ipynb](lab3/lab3-advanced-features.ipynb) |
+| Lab 1 | Introduction and Docker-Based Deployment | 90 min | [lab1-introduction-setup.ipynb](lab1/lab1-introduction-setup.ipynb) |
+| Lab 2 | Advanced Kubernetes Deployment | 120 min | [lab2-kubernetes-deployment.ipynb](lab2/lab2-kubernetes-deployment.ipynb) |
+| Lab 3 | Wide EP Deployments and KVBM | 120 min | [lab3-advanced-features.ipynb](lab3/lab3-advanced-features.ipynb) |
 
 ## Resources
 
