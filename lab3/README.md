@@ -30,12 +30,15 @@ Advanced configurations and manifests will be created during the lab.
    kubectl get nodes -o wide
    ```
 
-2. Open the Jupyter notebook:
+2. Start JupyterLab:
    ```bash
-   jupyter notebook lab3-advanced-features.ipynb
+   jupyter lab
    ```
+   Or use the Docker environment: `./start-workshop.sh`
 
-3. Follow the sections in order
+3. Navigate to `lab3/lab3-advanced-features.ipynb` in the JupyterLab file browser
+
+4. Follow the sections in order
 
 ## Expected Outcomes
 

@@ -7,11 +7,11 @@ echo ""
 echo "📦 Building Docker image..."
 docker-compose build
 
-# Start Jupyter
-echo "🎓 Starting Jupyter Notebook..."
+# Start JupyterLab
+echo "🎓 Starting JupyterLab..."
 docker-compose up -d
 
-# Wait a moment for Jupyter to start
+# Wait a moment for JupyterLab to start
 sleep 3
 
 echo ""

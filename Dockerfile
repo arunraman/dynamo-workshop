@@ -10,10 +10,9 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Jupyter and common Python packages
+# Install JupyterLab and common Python packages
 RUN pip install --no-cache-dir \
-    jupyter \
-    notebook \
+    jupyterlab \
     ipykernel \
     requests \
     pyyaml \
@@ -23,18 +22,15 @@ RUN pip install --no-cache-dir \
 # Copy workshop content
 COPY . /workspace
 
-# Expose Jupyter port
+# Expose JupyterLab port
 EXPOSE 8888
 
-# Set Jupyter configuration
-ENV JUPYTER_ENABLE_LAB=no
-
-# Start Jupyter Notebook
-CMD ["jupyter", "notebook", \
+# Start JupyterLab
+CMD ["jupyter", "lab", \
      "--ip=0.0.0.0", \
      "--port=8888", \
      "--no-browser", \
      "--allow-root", \
-     "--NotebookApp.token=''", \
-     "--NotebookApp.password=''"]
+     "--ServerApp.token=''", \
+     "--ServerApp.password=''"]
 

@@ -22,14 +22,17 @@ This lab introduces Dynamo and guides you through setting up a Docker-based aggr
 
 ## Getting Started
 
-1. Open the Jupyter notebook:
+1. Start JupyterLab:
    ```bash
-   jupyter notebook lab1-introduction-setup.ipynb
+   jupyter lab
    ```
+   Or use the Docker environment: `./start-workshop.sh`
 
-2. Follow the sections in order
+2. Navigate to `lab1/lab1-introduction-setup.ipynb` in the JupyterLab file browser
 
-3. Complete exercises at the end
+3. Follow the sections in order
+
+4. Complete exercises at the end
 
 ## Expected Outcomes
 

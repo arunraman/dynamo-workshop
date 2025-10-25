@@ -31,12 +31,15 @@ Kubernetes manifests and configurations will be created during the lab.
    kubectl get nodes
    ```
 
-2. Open the Jupyter notebook:
+2. Start JupyterLab:
    ```bash
-   jupyter notebook lab2-kubernetes-deployment.ipynb
+   jupyter lab
    ```
+   Or use the Docker environment: `./start-workshop.sh`
 
-3. Follow the sections in order
+3. Navigate to `lab2/lab2-kubernetes-deployment.ipynb` in the JupyterLab file browser
+
+4. Follow the sections in order
 
 ## Expected Outcomes
 

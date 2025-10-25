@@ -81,16 +81,17 @@ git clone <repository-url>
 cd dynamo-workshop
 ```
 
-2. Install Jupyter:
+2. Install JupyterLab:
 ```bash
-pip install jupyter notebook ipykernel requests pyyaml
+pip install jupyterlab ipykernel requests pyyaml
 ```
 
-3. Start with Lab 1:
+3. Start JupyterLab:
 ```bash
-cd lab1
-jupyter notebook lab1-introduction-setup.ipynb
+jupyter lab
 ```
+
+4. Navigate to Lab 1 in the JupyterLab interface and start with `lab1/lab1-introduction-setup.ipynb`
 
 ## Workshop Labs
 
