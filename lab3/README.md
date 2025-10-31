@@ -1,58 +1,59 @@
-# Lab 3: Wide EP Deployments and KVBM
+# Lab 3: Expert Parallelism for MoE Models
 
-This lab explores datacenter-scale deployments with wide EP and advanced KV cache management using KVBM.
+This lab covers Expert Parallelism (EP) for Mixture-of-Experts models, from foundations to production deployment.
 
 ## Objectives
 
-- Deploy Dynamo across multiple nodes (wide EP deployments)
-- Implement KVBM (KV Cache Bandwidth Manager)
-- Measure and compare performance of different deployment strategies
-- Optimize for production-scale workloads
+- Understand parallelism strategies (DP, TP, PP, SP, EP)
+- Learn MoE architecture and expert routing mechanisms
+- Deploy Wide EP with SGLang and TensorRT-LLM
+- Configure EPLB (Expert Parallelism Load Balancer)
+- Monitor and optimize multi-node MoE deployments
 
 ## Files
 
-- `lab3-advanced-features.ipynb` - Main lab notebook
-
-Advanced configurations and manifests will be created during the lab.
+- `lab3.1-expert-parallelism-foundations.ipynb` - Conceptual foundations and simulations
+- `lab3.2-wide-ep-deployment.ipynb` - Production deployment guide
+- `configs/` - TensorRT-LLM and SGLang configuration files
+- `k8s/` - Kubernetes deployment manifests
+- `images/` - Diagrams and visualizations
 
 ## Prerequisites
 
 - Completed Lab 1 and Lab 2
-- Multi-node Kubernetes cluster with GPUs
-- Understanding of distributed systems
-- Network with sufficient bandwidth between nodes
+- Multi-GPU cluster (minimum 4 GPUs recommended)
+- High-bandwidth interconnect (InfiniBand or NVLink recommended)
+- NATS and etcd running (from Lab 2)
 
 ## Getting Started
 
-1. Verify multi-node cluster setup:
+1. Start with Lab 3.1 to understand the concepts:
    ```bash
-   kubectl get nodes
-   kubectl get nodes -o wide
-   ```
-
-2. Start JupyterLab:
-   ```bash
-   jupyter lab
+   jupyter lab lab3.1-expert-parallelism-foundations.ipynb
    ```
    Or use the Docker environment: `./start-workshop.sh`
 
-3. Navigate to `lab3/lab3-advanced-features.ipynb` in the JupyterLab file browser
+2. Navigate to `lab3/lab3.1-expert-parallelism-foundations.ipynb` in the JupyterLab file browser
+
+3. After completing Lab 3.1, proceed to Lab 3.2 for deployment
 
 4. Follow the sections in order
 
 ## Expected Outcomes
 
 By the end of this lab, you will have:
-- Wide EP deployment across multiple nodes
-- KVBM configured and optimized
-- Performance comparison data
-- Production-ready deployment knowledge
+- Deep understanding of Expert Parallelism concepts
+- Hands-on experience with MoE routing simulations
+- Production-ready Wide EP deployments
+- Knowledge of EPLB load balancing strategies
+- Ability to monitor and troubleshoot multi-node MoE systems
 
 ## Time Estimate
 
-~120 minutes
+- Lab 3.1: ~45-60 minutes
+- Lab 3.2: ~60-90 minutes
 
-## Workshop Completion
+## Next Steps
 
-Congratulations on completing the Dynamo Workshop!
+After completing this lab, you'll be ready to deploy production-scale MoE models with optimal expert parallelism configurations.
 

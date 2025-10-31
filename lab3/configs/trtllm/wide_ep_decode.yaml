@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# TensorRT-LLM Wide EP Decode Worker Configuration
+# For DeepSeek-R1 deployment with disaggregated serving
+
+backend: pytorch
+
+# WideEP and MoE configuration
+moe_config:
+  backend: WIDEEP
+  # Path to EPLB configuration file
+  load_balancer: ./configs/trtllm/eplb.yaml
+
+# Parallelism configuration
+tensor_parallel_size: 16          # TP across 16 GPUs
+moe_expert_parallel_size: 16      # EP across 16 GPUs
+enable_attention_dp: true         # Enable data parallel attention
+
+# Batch and sequence settings
+max_batch_size: 256               # Maximum batch size
+max_num_tokens: 256               # Maximum tokens per iteration
+# 8448 = 8192 ISL (input sequence length) + 256 OSL (output sequence length)
+max_seq_len: 8448
+
+# KV cache configuration with FP8 quantization
+kv_cache_config:
+  # With DP attention enabled at high concurrency and large ISL,
+  # use lower fraction to ensure enough available memory
+  free_gpu_memory_fraction: 0.30
+  
+  # FP8 quantization for KV cache (saves 50% memory)
+  dtype: fp8
+
+# CUDA graph configuration (critical for decode performance)
+cuda_graph_config:
+  enable_padding: true
+  # Batch sizes for CUDA graph compilation
+  # Decode phase benefits significantly from CUDA graphs
+  # These pre-compiled graphs reduce latency by 5-10ms per token
+  batch_sizes:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 16
+    - 32
+    - 64
+    - 128
+    - 256
+
+# Scheduler configuration
+disable_overlap_scheduler: false
+
+# Logging
+print_iter_log: true
+
+# KV cache transfer backend for disaggregation
+cache_transceiver_config:
+  backend: DEFAULT  # Receives KV cache from prefill workers
+

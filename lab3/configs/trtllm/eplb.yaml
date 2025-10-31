@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Expert Parallelism Load Balancer (EPLB) Configuration
+# This configuration is used by both prefill and decode workers
+
+# EPLB algorithm selection
+# Options: deepseek, hierarchical, global
+algorithm: deepseek
+
+# Number of redundant experts to create beyond the model's native expert count
+# For DeepSeek-R1 (256 experts), adding 32 redundant experts = 288 total
+# Formula: redundant_experts ≈ num_GPUs / 2 to num_GPUs
+redundant_experts: 32
+
+# How often to trigger rebalancing (in number of iterations)
+# Lower values = more frequent rebalancing = more responsive but higher overhead
+# Higher values = less frequent = lower overhead but slower to adapt
+rebalance_frequency: 100
+
+# Expert usage recording mode
+# Options: per_token, per_pass, stat, stat_approx
+# - per_token: Most detailed, highest overhead
+# - per_pass: Aggregated per forward pass
+# - stat: Aggregated across multiple passes (recommended)
+# - stat_approx: Approximate statistics from dispatcher (lowest overhead)
+usage_recorder_mode: stat
+
+# Buffer size for usage statistics (number of forward passes to aggregate)
+buffer_size: 10
+
+# Additional notes:
+# - This configuration works for both TensorRT-LLM and SGLang backends
+# - Adjust redundant_experts based on your GPU count and workload
+# - Monitor EPLB logs to see rebalancing events and expert distribution
+

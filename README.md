@@ -22,12 +22,17 @@ Dynamo is a high-performance, distributed LLM inference serving framework that s
 - Multi-model deployment with shared frontend
 - AI Configurator for optimal configurations
 
-### Lab 3: Wide EP Deployments and KVBM
-- Wide EP (Elastic Parallelism) multi-node deployments
-- KVBM (KV Cache Bandwidth Manager) deployment
-- Cache policy configuration and optimization
-- Performance measurement and comparison
-- Production considerations
+### Lab 3: Expert Parallelism for MoE Models
+- **Lab 3.1**: Expert Parallelism Foundations
+  - Understanding parallelism strategies (DP, TP, PP, SP, EP)
+  - MoE architecture and expert routing mechanisms
+  - Wide EP, Deep EP, and Dynamic EP (EPLB)
+  - Large-scale deployment insights (GB200 NVL72)
+- **Lab 3.2**: Wide EP Production Deployment
+  - Kubernetes deployment with Dynamo Operator
+  - Multi-node SGLang and TensorRT-LLM configurations
+  - EPLB load balancing strategies
+  - Monitoring and troubleshooting
 
 ## Prerequisites
 
@@ -81,9 +86,9 @@ git clone <repository-url>
 cd dynamo-workshop
 ```
 
-2. Install JupyterLab:
+2. Install dependencies:
 ```bash
-pip install jupyterlab ipykernel requests pyyaml
+pip install -r requirements.txt
 ```
 
 3. Start JupyterLab:
@@ -99,7 +104,8 @@ jupyter lab
 |-----|-------|----------|----------|
 | Lab 1 | Introduction and Docker-Based Deployment | 90 min | [lab1-introduction-setup.ipynb](lab1/lab1-introduction-setup.ipynb) |
 | Lab 2 | Advanced Kubernetes Deployment | 120 min | [lab2-kubernetes-deployment.ipynb](lab2/lab2-kubernetes-deployment.ipynb) |
-| Lab 3 | Wide EP Deployments and KVBM | 120 min | [lab3-advanced-features.ipynb](lab3/lab3-advanced-features.ipynb) |
+| Lab 3.1 | Expert Parallelism Foundations | 45-60 min | [lab3.1-expert-parallelism-foundations.ipynb](lab3/lab3.1-expert-parallelism-foundations.ipynb) |
+| Lab 3.2 | Wide EP Production Deployment | 60-90 min | [lab3.2-wide-ep-deployment.ipynb](lab3/lab3.2-wide-ep-deployment.ipynb) |
 
 ## Resources
 

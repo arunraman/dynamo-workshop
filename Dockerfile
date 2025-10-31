@@ -10,14 +10,11 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Install JupyterLab and common Python packages
-RUN pip install --no-cache-dir \
-    jupyterlab \
-    ipykernel \
-    requests \
-    pyyaml \
-    matplotlib \
-    pandas
+# Copy requirements first for better layer caching
+COPY requirements.txt /workspace/requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /workspace/requirements.txt
 
 # Copy workshop content
 COPY . /workspace
