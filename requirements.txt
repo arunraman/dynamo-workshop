@@ -1,6 +1,9 @@
 # Dynamo Workshop Requirements
 # Python dependencies for Lab 1, 2, and 3 notebooks
 
+# Dynamo LLM Serving (fixed version)
+dynamo-llm==0.6.0
+
 # Core Jupyter dependencies
 jupyter>=1.0.0
 notebook>=7.0.0

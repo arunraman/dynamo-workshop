@@ -6,14 +6,23 @@ This directory contains Kubernetes manifests for deploying DeepSeek-R1 with Expe
 
 1. **Dynamo Platform Installed**:
    ```bash
-   helm install dynamo-platform nvidia/dynamo-platform --namespace dynamo-system --create-namespace
+   export NAMESPACE="dynamo-workshop"
+   
+   # Install CRDs (skip if on shared cluster where CRDs already exist)
+   helm fetch https://helm.ngc.nvidia.com/nvidia/ai-dynamo/charts/dynamo-crds-0.6.0.tgz
+   helm install dynamo-crds dynamo-crds-0.6.0.tgz --namespace default
+   
+   # Create namespace and install platform
+   kubectl create namespace ${NAMESPACE}
+   helm fetch https://helm.ngc.nvidia.com/nvidia/ai-dynamo/charts/dynamo-platform-0.6.0.tgz
+   helm install dynamo-platform dynamo-platform-0.6.0.tgz --namespace ${NAMESPACE}
    ```
 
 2. **HuggingFace Token Secret** (for model downloads):
    ```bash
    kubectl create secret generic hf-token-secret \
      --from-literal=HF_TOKEN=your_hf_token_here \
-     -n dynamo
+     -n ${NAMESPACE}
    ```
 
 3. **GPU Nodes**: Ensure your cluster has GPU nodes with:
@@ -27,7 +36,7 @@ This directory contains Kubernetes manifests for deploying DeepSeek-R1 with Expe
 Deploy DeepSeek-R1 with SGLang backend, Expert Parallelism, and EPLB:
 
 ```bash
-kubectl apply -f deepseek-r1-wideep.yaml
+kubectl apply -f deepseek-r1-wideep.yaml -n ${NAMESPACE}
 ```
 
 **Configuration**:
@@ -46,10 +55,10 @@ Deploy DeepSeek-R1 with TensorRT-LLM backend and FP8 quantization:
 # First, create ConfigMap from YAML configs
 kubectl create configmap trtllm-configs \
   --from-file=../configs/trtllm/ \
-  -n dynamo
+  -n ${NAMESPACE}
 
 # Then deploy
-kubectl apply -f deepseek-r1-trtllm.yaml
+kubectl apply -f deepseek-r1-trtllm.yaml -n ${NAMESPACE}
 ```
 
 **Configuration**:
@@ -63,27 +72,27 @@ kubectl apply -f deepseek-r1-trtllm.yaml
 
 ```bash
 # Check deployment status
-kubectl get dynamographdeployment -n dynamo
+kubectl get dynamographdeployment -n ${NAMESPACE}
 
 # Check pods
-kubectl get pods -n dynamo -l app.kubernetes.io/name=deepseek-r1-wideep
+kubectl get pods -n ${NAMESPACE} -l app.kubernetes.io/name=deepseek-r1-wideep
 
 # Check logs
-kubectl logs -n dynamo -l component=prefill --tail=100
-kubectl logs -n dynamo -l component=decode --tail=100
+kubectl logs -n ${NAMESPACE} -l component=prefill --tail=100
+kubectl logs -n ${NAMESPACE} -l component=decode --tail=100
 
 # Check frontend
-kubectl logs -n dynamo -l component=frontend
+kubectl logs -n ${NAMESPACE} -l component=frontend
 ```
 
 ## Testing the Deployment
 
 ```bash
 # Get the frontend service
-kubectl get svc -n dynamo
+kubectl get svc -n ${NAMESPACE}
 
 # Port-forward to access locally
-kubectl port-forward -n dynamo svc/deepseek-r1-wideep-frontend 8000:8000
+kubectl port-forward -n ${NAMESPACE} svc/deepseek-r1-wideep-frontend 8000:8000
 
 # Test with curl
 curl http://localhost:8000/v1/chat/completions \
@@ -183,7 +192,7 @@ args:
 
 ```bash
 # Check pod events
-kubectl describe pod -n dynamo <pod-name>
+kubectl describe pod -n ${NAMESPACE} <pod-name>
 
 # Common issues:
 # - Insufficient GPU resources
@@ -195,7 +204,7 @@ kubectl describe pod -n dynamo <pod-name>
 
 ```bash
 # Check EPLB logs
-kubectl logs -n dynamo -l component=prefill | grep EPLB
+kubectl logs -n ${NAMESPACE} -l component=prefill | grep EPLB
 
 # Adjust redundant experts
 # Edit the deployment and increase --ep-num-redundant-experts
@@ -205,20 +214,20 @@ kubectl logs -n dynamo -l component=prefill | grep EPLB
 
 ```bash
 # Verify InfiniBand
-kubectl exec -n dynamo <pod-name> -- ibstat
+kubectl exec -n ${NAMESPACE} <pod-name> -- ibstat
 
 # Check NIXL configuration
-kubectl logs -n dynamo <pod-name> | grep nixl
+kubectl logs -n ${NAMESPACE} <pod-name> | grep nixl
 ```
 
 ## Cleanup
 
 ```bash
 # Delete deployment
-kubectl delete -f deepseek-r1-wideep.yaml
+kubectl delete -f deepseek-r1-wideep.yaml -n ${NAMESPACE}
 
 # Or delete by name
-kubectl delete dynamographdeployment deepseek-r1-wideep -n dynamo
+kubectl delete dynamographdeployment deepseek-r1-wideep -n ${NAMESPACE}
 ```
 
 ## Advanced: Using Helm
@@ -228,7 +237,7 @@ For production deployments, consider creating a Helm chart:
 ```bash
 helm create deepseek-r1-chart
 # Customize values.yaml with your configuration
-helm install deepseek-r1 ./deepseek-r1-chart -n dynamo
+helm install deepseek-r1 ./deepseek-r1-chart -n ${NAMESPACE}
 ```
 
 ## Resources
