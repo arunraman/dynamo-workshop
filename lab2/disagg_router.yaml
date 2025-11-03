@@ -13,7 +13,7 @@ spec:
       replicas: 1
       extraPodSpec:
         mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:0.5.0
       envs:
         - name: DYN_ROUTER_MODE
           value: kv
@@ -24,7 +24,7 @@ spec:
       replicas: 1
       resources:
         limits:
-          gpu: "8"
+          gpu: "2"
       envs:
         - name: DYN_LOG
           value: "debug"
@@ -32,10 +32,10 @@ spec:
         volumes:
         - name: local-model-cache
           hostPath:
-            path: /YOUR/LOCAL/CACHE/FOLDER
+            path: /home/kylhuang/model_cache
             type: DirectoryOrCreate
         mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:0.5.0
           workingDir: /workspace/components/backends/vllm
           volumeMounts:
           - name: local-model-cache
@@ -44,7 +44,7 @@ spec:
             - /bin/sh
             - -c
           args:
-            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 8
+            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 2
     VllmPrefillWorker:
       dynamoNamespace: vllm-v1-disagg-router
       envFromSecret: hf-token-secret
@@ -52,7 +52,7 @@ spec:
       replicas: 1
       resources:
         limits:
-          gpu: "4"
+          gpu: "2"
       envs:
         - name: DYN_LOG
           value: "debug"
@@ -60,10 +60,10 @@ spec:
         volumes:
         - name: local-model-cache
           hostPath:
-            path: /YOUR/LOCAL/CACHE/FOLDER
+            path: /home/kylhuang/model_cache
             type: DirectoryOrCreate
         mainContainer:
-          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:0.5.0
           workingDir: /workspace/components/backends/vllm
           volumeMounts:
           - name: local-model-cache
@@ -72,4 +72,4 @@ spec:
             - /bin/sh
             - -c
           args:
-            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 4 --is-prefill-worker
+            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 2 --is-prefill-worker
