@@ -3,6 +3,7 @@
 
 # Dynamo LLM Serving (fixed version)
 ai-dynamo[vllm]==0.6.0
+aiconfigurator
 
 # Core Jupyter dependencies
 jupyter>=1.0.0
