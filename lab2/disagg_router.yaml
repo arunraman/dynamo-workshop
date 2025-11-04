@@ -24,7 +24,7 @@ spec:
       replicas: 1
       resources:
         limits:
-          gpu: "2"
+          gpu: "1"
       envs:
         - name: DYN_LOG
           value: "debug"
@@ -44,7 +44,7 @@ spec:
             - /bin/sh
             - -c
           args:
-            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 2
+            - python3 -m dynamo.vllm --model Qwen/Qwen2.5-1.5B-Instruct -tp 1
     VllmPrefillWorker:
       dynamoNamespace: vllm-v1-disagg-router
       envFromSecret: hf-token-secret
@@ -52,7 +52,7 @@ spec:
       replicas: 1
       resources:
         limits:
-          gpu: "2"
+          gpu: "1"
       envs:
         - name: DYN_LOG
           value: "debug"
@@ -72,4 +72,4 @@ spec:
             - /bin/sh
             - -c
           args:
-            - python3 -m dynamo.vllm --model meta-llama/Llama-3.1-70B-Instruct -tp 2 --is-prefill-worker
+            - python3 -m dynamo.vllm --model Qwen/Qwen2.5-1.5B-Instruct -tp 1 --is-prefill-worker
