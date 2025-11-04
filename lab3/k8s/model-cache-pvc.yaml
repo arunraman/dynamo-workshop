@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Persistent Volume Claim for caching the DeepSeek-R1 model
+# This PVC will be shared across prefill and decode pods to avoid redundant downloads
+#
+# IMPORTANT: Update storageClassName based on your cluster
+# To list available storage classes: kubectl get storageclass
+# Common options:
+#   - standard (default for many clusters)
+#   - gp2, gp3 (AWS EBS)
+#   - pd-standard, pd-ssd (GCP)
+#   - managed-nfs-storage (NFS)
+#   - local-path (for single-node testing)
+#
+# For ReadWriteMany access, you may need:
+#   - NFS-based storage (e.g., managed-nfs-storage, efs-sc)
+#   - Cloud file storage (e.g., Azure Files, GCP Filestore)
+#   - Ceph/Rook storage
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-cache-pvc
+  namespace: dynamo-workshop
+spec:
+  accessModes:
+    - ReadWriteMany  # Required for multiple pods to read/write simultaneously
+  resources:
+    requests:
+      storage: 500Gi  # DeepSeek-R1 requires ~100GB, 500Gi provides buffer
+  storageClassName: nebius-shared-fs  # NFS-based storage with ReadWriteMany support
+  # Alternative: compute-csi-default-sc (block storage, ReadWriteOnce only)
+

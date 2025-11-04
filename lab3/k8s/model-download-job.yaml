@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Kubernetes Job to download DeepSeek-R1 model to the PVC
+# This job runs once to populate the model cache before deployment
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: deepseek-r1-model-download
+  namespace: dynamo-workshop
+spec:
+  ttlSecondsAfterFinished: 3600  # Auto-delete job 1 hour after completion
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: model-downloader
+        image: python:3.11-slim
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "Installing huggingface_hub..."
+          pip install --no-cache-dir huggingface_hub
+          
+          echo "Starting model download..."
+          python3 -c "
+          from huggingface_hub import snapshot_download
+          import os
+          
+          model_id = 'deepseek-ai/DeepSeek-R1'
+          cache_dir = '/model-cache/deepseek-r1'
+          
+          print(f'Downloading {model_id} to {cache_dir}...')
+          snapshot_download(
+              repo_id=model_id,
+              local_dir=cache_dir,
+              local_dir_use_symlinks=False,
+              token=os.environ.get('HF_TOKEN')
+          )
+          print('Download complete!')
+          "
+        env:
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-token-secret
+              key: HF_TOKEN
+        volumeMounts:
+        - name: model-cache
+          mountPath: /model-cache
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: model-cache-pvc
+
