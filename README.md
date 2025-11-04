@@ -75,7 +75,7 @@ cd dynamo-workshop
 
 5. When finished, stop the environment:
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Option 2: Local Installation

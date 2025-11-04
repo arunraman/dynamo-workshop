@@ -33,9 +33,8 @@ RUN helm version
 # Copy workshop content
 COPY . /workspace
 
+# Create .kube directory (kubeconfig will be mounted at runtime)
 RUN mkdir -p /root/.kube
-# Copy kubeconfig (adjust the source path as necessary)
-COPY ./config /root/.kube/
 
 # Expose JupyterLab port
 EXPOSE 8888

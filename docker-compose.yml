@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   jupyterlab:
     build: .
@@ -9,6 +7,7 @@ services:
       - "8888:8888"
     volumes:
       - ./:/workspace
+      - ${HOME}/.kube/config:/root/.kube/config:ro
     working_dir: /workspace
     stdin_open: true
     tty: true
