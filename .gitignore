@@ -25,6 +25,9 @@ lab3-env/
 models/
 checkpoints/
 
+# Build artifacts
+target/
+
 # Logs
 *.log
 logs/
