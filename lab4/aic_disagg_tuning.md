@@ -11,7 +11,7 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 - Depend on ISL, OSL, TTFT, TPOT
 - The tuning efforts are tremendous
 
-<img src="images/challenges_in_disagg.png" width="600" alt="challenges_in_disagg">
+<img src="images/challenges_in_disagg.png" width="700" alt="challenges_in_disagg" style="display: block; margin: 0 auto;">
 
 ## Disagg pd QPS Matching Methology 
 ### We can firstly __find a worker that meets SLA and under constraints__
@@ -20,7 +20,7 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 - Find max batch size of the worker which meets TTFT and TPOT respectively (Disagg is awesome! We can achieve this separately)
 - Ensure there's no OOM
 
-<img src="images/find_worker_SLA.png" width="300" alt="find_worker_SLA">
+<img src="images/find_worker_SLA.png" width="600" alt="find_worker_SLA" style="display: block; margin: 0 auto;">
 
 ### __Match__ the N prefill worker candidates with M decode worker candidates in view of __sequence throughput seq/s__
 
@@ -29,7 +29,7 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 - The throughput should __match__ between xP and yD
 - Finally, sweep X and Y for a given (prefill, decode) worker combination, find the best seq/s/gpu, thus the best tokens/s/gpu
 
-<img src="images/qps_match.png" width="300" alt="qps_match">
+<img src="images/qps_match.png" width="600" alt="qps_match" style="display: block; margin: 0 auto;">
 
 # agg/disagg best perf tuning based on AIC
 ## Case Study
@@ -44,17 +44,17 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 [AIC automation deploy guide](https://github.com/ai-dynamo/aiconfigurator/blob/main/docs/dynamo_deployment_guide.md)
 
 ### local deployment vs. k8s deployment 
-<img src="images/local_deploy_k8s.png" width="600" alt="local_deploy_k8s">
+<img src="images/local_deploy_k8s.png" width="900" alt="local_deploy_k8s" style="display: block; margin: 0 auto;">
 
 ### AIC projection and ai-perf actual run allignment 
-<img src="images/disagg_aic_allignment.png" width="600" alt="disagg_aic_allignment">
+<img src="images/disagg_aic_allignment.png" width="800" alt="disagg_aic_allignment" style="display: block; margin: 0 auto;">
 
 What's the problem here: this tps/user - tps/gpu pareto plot __does not have TTFT info at all__ while TTFT one of the most important SLAs
 
 ### Manual fine tuning based on AIC suggestions 
 __agg allignment__ 
 
-<img src="images/agg_allignment.png" width="400" alt="agg_allignment">
+<img src="images/agg_allignment.png" width="500" alt="agg_allignment" style="display: block; margin: 0 auto;">
 
 TTFT estimation is complicated. 
 Currently AIC can handle TTFT from engine execution, but not other online serving overheads, say request queuing
@@ -65,7 +65,7 @@ We did look around with other combinations of `TP_size` and `max_batch_size` and
 
 __disagg allignment__ 
 
-<img src="images/disagg_allignment.png" width="400" alt="disagg_allignment">
+<img src="images/disagg_allignment.png" width="500" alt="disagg_allignment" style="display: block; margin: 0 auto;">
 
 Actual run based on AIC's suggestion is noted in yellow, as we can observe, tps/user is a little bit less than SLA requirement (60), which means we need more decode wokers and to tune decode `max_batch_size` (usually equals to `request concurrency`) to enhance decoding capability. 
 
