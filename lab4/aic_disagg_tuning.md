@@ -29,7 +29,7 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 - The throughput should __match__ between xP and yD
 - Finally, sweep X and Y for a given (prefill, decode) worker combination, find the best seq/s/gpu, thus the best tokens/s/gpu
 
-<img src="images/qps_match.png" width="600" alt="qps_match" style="display: block; margin: 0 auto;">
+<img src="images/qps_match.png" width="500" alt="qps_match" style="display: block; margin: 0 auto;">
 
 # agg/disagg best perf tuning based on AIC
 ## Case Study
