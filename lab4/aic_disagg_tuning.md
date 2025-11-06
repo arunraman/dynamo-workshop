@@ -32,3 +32,62 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 ![qps_match](images/qps_match.png)
 
 # disagg best perf tuning based on AIC
+## case study
+### settings
+- model: qwen3-32b-fp8-per-block
+- ISL:OSL = 4000/500
+- TTFT SLA = 6000/1200 ms
+- TPS/user SLA >= 60
+- disable prefix caching
+
+### AIC based full automation deployment 
+[AIC automation deploy guide](https://github.com/ai-dynamo/aiconfigurator/blob/main/docs/dynamo_deployment_guide.md)
+
+### local deployment vs. k8s deployment 
+![local_deploy_k8s](images/local_deploy_k8s.png)
+
+### AIC projection and ai-perf actual run allignment 
+![disagg_aic_allignment](images/disagg_aic_allignment.png)
+
+What's the problem here: this tps/user - tps/gpu pareto plot __does not have TTFT info at all__ while TTFT one of the most important SLAs
+
+### Manual fine tuning based on AIC suggestions 
+__agg allignment__ 
+
+![agg_allignment](images/agg_allignment.png)
+
+TTFT estimation is complicated. 
+Currently AIC can handle TTFT from engine execution, but not other online serving overheads, say request queuing
+
+actual TTFT is higher than expected, so we're supposed to reduce `max_batch_size` with `TP2` to meet TTFT SLA
+
+We did look around with other combinations of `TP_size` and `max_batch_size` and AIC was right, `TP2` is the best choice
+
+__disagg allignment__ 
+
+![disagg_allignment](images/disagg_allignment.png)
+
+Actual run based on AIC's suggestion is noted in yellow, as we can observe, tps/user is a little bit less than SLA requirement (60), which means we need more decode wokers and to tune decode `max_batch_size` (usually equals to `request concurrency`) to enhance decoding capability. 
+
+We fine tuned with more decode GPUs (`2 x tp2` and `1 x tp4`) with corresponding decode worker `max_batch_size` and prefill worker `parallism setting` and we found best disagg config __within minimum search area__ 
+
+__Conclusion__ 
+
+Based on AIC run and minimum manual fine tuning process 
+
+- Under TTFT constraint of 600 ms, disagg delivers a __148%__ tps/gpu perf gain over agg
+
+- Under TTFT constraint of 1200 ms, disagg delivers a __102%__ tps/gpu perf gain over agg
+
+We've been working on fine-grained AIC perf allignment, advanced feature such as prefix caching modeling, vllm/sglang (including wide ep) backend supports etc. Stay tuned!
+
+__Corresponding recipe__
+
+https://github.com/ai-dynamo/dynamo/tree/main/recipes/qwen3-32b-fp8
+
+
+
+
+
+
+
