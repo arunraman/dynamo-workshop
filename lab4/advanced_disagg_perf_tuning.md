@@ -36,7 +36,7 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 ### Settings
 - model: qwen3-32b-fp8-per-block
 - ISL:OSL = 4000/500
-- TTFT SLA = 6000/1200 ms
+- TTFT SLA = 600/1200 ms
 - TPS/user SLA >= 60
 - disable prefix caching
 
@@ -48,7 +48,7 @@ AIC is now supporting automate everything in one script, starting from configuri
 ### local deployment vs. k8s deployment 
 <img src="images/local_deploy_k8s.png" width="900" alt="local_deploy_k8s" style="display: block; margin: 0 auto;">
 
-### AIC projection and ai-perf actual run allignment 
+### disagg - AIC projection and ai-perf actual run allignment 
 <img src="images/disagg_aic_allignment.png" width="800" alt="disagg_aic_allignment" style="display: block; margin: 0 auto;">
 
 What's the problem here: this tps/user - tps/gpu pareto plot __does not have TTFT info at all__ while TTFT one of the most important SLAs
