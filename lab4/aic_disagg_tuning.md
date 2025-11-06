@@ -43,6 +43,8 @@ __Challenge2__ – How to configure disaggregated serving to solve the problem _
 ### AIC based full automation deployment 
 [AIC automation deploy guide](https://github.com/ai-dynamo/aiconfigurator/blob/main/docs/dynamo_deployment_guide.md)
 
+AIC is now supporting automate everything in one script, starting from configuring the deployment, generating configs, preparing docker image and container, pulling model checkpoints, deploying service, benchmarking and summarizing. Refer to [Automation](https://github.com/ai-dynamo/aiconfigurator/blob/main/tools/automation/README.md) for more details
+
 ### local deployment vs. k8s deployment 
 <img src="images/local_deploy_k8s.png" width="900" alt="local_deploy_k8s" style="display: block; margin: 0 auto;">
 
