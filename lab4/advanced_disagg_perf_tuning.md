@@ -71,7 +71,7 @@ __disagg allignment__
 
 Actual run based on AIC's suggestion is noted in yellow, as we can observe, tps/user is a little bit less than SLA requirement (60), which means we need more decode wokers and to tune decode `max_batch_size` (usually equals to `request concurrency`) to enhance decoding capability. 
 
-We fine tuned with more decode GPUs (`2 x tp2` and `1 x tp4`) with corresponding decode worker `max_batch_size` and prefill worker `parallism setting` and we found best disagg config __within minimum search area__ 
+We fine tuned with more decode GPUs (`2 x tp2` and `1 x tp4`) with corresponding decode worker `max_batch_size` and prefill worker `parallism setting`, finally we found best disagg config __within minimum search area__ 
 
 __Conclusion__ 
 
