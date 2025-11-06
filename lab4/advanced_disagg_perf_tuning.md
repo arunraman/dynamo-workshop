@@ -51,7 +51,7 @@ AIC is now supporting automate everything in one script, starting from configuri
 ### disagg - AIC projection and ai-perf actual run allignment 
 <img src="images/disagg_aic_allignment.png" width="800" alt="disagg_aic_allignment" style="display: block; margin: 0 auto;">
 
-What's the problem here: this tps/user - tps/gpu pareto plot __does not have TTFT info at all__ while TTFT one of the most important SLAs
+What's the problem here: this tps/user - tps/gpu pareto plot __does not have TTFT info at all__ while TTFT is one of the most important SLAs
 
 ### Manual fine tuning based on AIC suggestions 
 __agg allignment__ 
