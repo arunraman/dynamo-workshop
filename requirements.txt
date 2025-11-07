@@ -1,8 +1,8 @@
 # Dynamo Workshop Requirements
 # Python dependencies for Lab 1, 2, and 3 notebooks
 
-# Dynamo LLM Serving (fixed version)
-# ai-dynamo[vllm]==0.6.0
+# Install AIconfigurator
+
 aiconfigurator
 
 # Core Jupyter dependencies
