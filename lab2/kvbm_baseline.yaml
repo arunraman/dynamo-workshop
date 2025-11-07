@@ -1,0 +1,80 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Lab 2 Extension: KVBM Baseline Configuration
+# This deploys vLLM with NIXL connector (no KVBM offloading)
+# Used to establish baseline performance before enabling KVBM
+
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: vllm-kvbm-baseline
+spec:
+  services:
+    Frontend:
+      dynamoNamespace: vllm-kvbm-baseline
+      componentType: frontend
+      replicas: 1
+      extraPodSpec:
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:0.6.0
+    VllmDecodeWorker:
+      envFromSecret: hf-token-secret
+      dynamoNamespace: vllm-kvbm-baseline
+      componentType: worker
+      replicas: 1
+      resources:
+        limits:
+          gpu: "1"
+      envs:
+        - name: DYN_LOG
+          value: "info"
+        - name: VLLM_NIXL_CONNECTOR
+          value: "true"  # Use NIXL connector (baseline)
+      extraPodSpec:
+        volumes:
+        - name: local-model-cache
+          hostPath:
+            path: /data/huggingface-cache  # Update with actual cache path
+            type: DirectoryOrCreate
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:0.6.0
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
+          volumeMounts:
+          - name: shared-model-cache
+            mountPath: /models
+            readOnly: true
+          workingDir: /workspace/components/backends/vllm
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - python3 -m dynamo.vllm --model /models/Qwen3-4B --connector nixl --gpu-memory-utilization 0.2 --enable-prefix-caching
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 9090
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 40  # ~20 minutes for model loading
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 9090
+            initialDelaySeconds: 200
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /live
+              port: 9090
+            initialDelaySeconds: 200
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 10
+
