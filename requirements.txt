@@ -2,7 +2,7 @@
 # Python dependencies for Lab 1, 2, and 3 notebooks
 
 # Dynamo LLM Serving (fixed version)
-ai-dynamo[vllm]==0.6.0
+# ai-dynamo[vllm]==0.6.0
 aiconfigurator
 
 # Core Jupyter dependencies
