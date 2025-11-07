@@ -36,6 +36,10 @@ spec:
             type: DirectoryOrCreate
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
           volumeMounts:
           - name: local-model-cache
             mountPath: /root/.cache

@@ -36,6 +36,10 @@ spec:
             type: DirectoryOrCreate
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
           workingDir: /workspace/components/backends/vllm
           volumeMounts:
           - name: local-model-cache
@@ -64,6 +68,10 @@ spec:
             type: DirectoryOrCreate
         mainContainer:
           image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:my-tag
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
           workingDir: /workspace/components/backends/vllm
           volumeMounts:
           - name: local-model-cache
