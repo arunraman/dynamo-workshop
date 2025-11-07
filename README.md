@@ -54,9 +54,142 @@ Before starting this workshop, ensure you have:
   - Familiarity with Python
   - Basic understanding of LLMs and inference
 
+## Multi-User Shared Workstation Setup
+
+**For Workshop Participants:** If you're attending a workshop using a shared workstation, follow these instructions instead of the "Getting Started" options below.
+
+### Architecture Overview
+
+The workshop uses a shared workstation where:
+- ~30 users run concurrently with individual user accounts
+- Each user has unique port assignments based on UID (1000-1040)
+- JupyterLab and services run natively (bare metal, not Docker)
+- Python environments managed with `uv` for fast dependency installation
+- Kubernetes namespaces are pre-created per user
+
+### Port Allocation Scheme
+
+Your ports are automatically calculated based on your UID:
+
+| Service | Port Formula | Example (UID=1005) |
+|---------|-------------|-------------------|
+| JupyterLab | 8888 + (UID - 1000) | 8893 |
+| Frontend (Lab 1) | 10000 + (UID - 1000) | 10005 |
+| Frontend (Lab 2) | 11000 + (UID - 1000) | 11005 |
+| Prometheus | 19090 + (UID - 1000) | 19095 |
+| Grafana | 13000 + (UID - 1000) | 13005 |
+
+**Note:** Your environment variables are automatically set via `workshop-env.sh` which is sourced in your `.bashrc`.
+
+### Quick Start (Workshop Day)
+
+#### Step 1: SSH into the Workstation
+
+```bash
+ssh your-username@workshop-hostname
+```
+
+#### Step 2: Start the Workshop Environment
+
+```bash
+cd ~/dynamo-workshop
+./start-workshop.sh
+```
+
+This will:
+- Load your user-specific port configuration
+- Activate your Python virtual environment (managed by uv)
+- Start JupyterLab on your assigned port
+- Display connection information
+
+#### Step 3: Set Up SSH Tunnels (On Your Local Machine)
+
+From your **local machine** (not the workstation), run:
+
+```bash
+# Automatic setup (recommended)
+./setup-tunnels.sh your-username@workshop-hostname
+
+# Or manually (see TUNNELING.md for details)
+```
+
+The tunnel script will:
+- Detect your remote UID
+- Calculate your assigned ports
+- Set up all necessary SSH tunnels
+- Display connection URLs
+
+#### Step 4: Access JupyterLab
+
+Open your browser to: **http://localhost:8888**
+
+(The local port is always 8888, regardless of your remote port)
+
+#### Step 5: Start Lab 1
+
+Navigate to `lab1/lab1-introduction-setup.md` in JupyterLab and begin!
+
+### Checking Your Configuration
+
+At any time, you can check your port assignments:
+
+```bash
+# On the workstation
+source ~/dynamo-workshop/workshop-env.sh
+
+# Or run the verification script
+~/dynamo-workshop/check-ports.sh
+```
+
+### SSH Tunnel Guide
+
+For detailed SSH tunneling instructions, including:
+- Manual setup
+- VS Code Remote SSH configuration
+- Troubleshooting port conflicts
+- Keeping tunnels alive
+
+See: **[TUNNELING.md](TUNNELING.md)**
+
+### Python Environment
+
+The workshop uses **uv** for Python package management:
+- Fast dependency installation (much faster than pip)
+- Virtual environments pre-created via Ansible
+- All requirements pre-installed
+- To add packages: `uv pip install package-name`
+
+### Troubleshooting
+
+**Port conflicts:**
+```bash
+# Check what's using your ports
+./check-ports.sh
+
+# Kill stuck processes
+pkill -f 'jupyter.*YOUR_PORT'
+pkill -f 'port-forward'
+```
+
+**Environment issues:**
+```bash
+# Reload environment
+source ~/dynamo-workshop/workshop-env.sh
+
+# Reinstall dependencies
+cd ~/dynamo-workshop
+uv pip install -r requirements.txt
+```
+
+**For Administrators:** See [ANSIBLE_PROVISIONING.md](ANSIBLE_PROVISIONING.md) for setup instructions.
+
+---
+
 ## Getting Started
 
-### Option 1: Using Docker (Recommended)
+**Note:** These options are for **single-user local development**. Workshop participants should use the "Multi-User Shared Workstation Setup" above.
+
+### Option 1: Using Docker (Single-User Local Development)
 
 1. Clone this repository:
 ```bash

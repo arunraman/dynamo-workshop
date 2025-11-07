@@ -1,52 +1,65 @@
-# Lab 1: Introduction and Docker-Based Deployment
+# Lab 1: Introduction and Kubernetes-Based Deployment
 
-This lab introduces Dynamo and guides you through setting up a Docker-based aggregated deployment.
+This lab introduces Dynamo and guides you through setting up a namespace-scoped Kubernetes deployment on a shared cluster.
 
 ## Objectives
 
-- Set up the Dynamo environment
-- Deploy Dynamo using Docker-based aggregated deployment
-- Configure a backend engine (vLLM, SGLang, or TensorRT-LLM)
+- Set up your personal namespace in the shared Kubernetes cluster
+- Deploy namespace-scoped Dynamo platform (operator, etcd, NATS)
+- Deploy your first model using aggregated serving with vLLM
+- Test with OpenAI-compatible API
 - Benchmark the deployment using AI-Perf
 
 ## Files
 
-- `lab1-introduction-setup.ipynb` - Main lab notebook
+- `lab1-introduction-setup.md` - Main lab guide with detailed instructions
+- `lab1-monitoring.md` - Optional extension for Prometheus and Grafana monitoring
+- `agg_router.yaml` - Kubernetes deployment manifest for aggregated serving
 
 ## Prerequisites
 
-- Docker and Docker Compose
-- Python 3.10+
-- GPU (recommended)
-- 16GB+ RAM
+- Kubernetes cluster access (kubeconfig provided by instructor)
+- `kubectl` installed (version 1.24+)
+- `helm` 3.x installed
+- HuggingFace token from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 
 ## Getting Started
 
-1. Start JupyterLab:
+1. Verify your kubeconfig is set up correctly:
    ```bash
-   jupyter lab
+   kubectl version --client
+   kubectl cluster-info
    ```
-   Or use the Docker environment: `./start-workshop.sh`
 
-2. Navigate to `lab1/lab1-introduction-setup.ipynb` in the JupyterLab file browser
+2. Follow the guide in `lab1-introduction-setup.md`
 
-3. Follow the sections in order
+3. Start with Section 1 (Environment Setup) and proceed through each section in order
 
-4. Complete exercises at the end
+4. Use the Appendix for complete command reference
 
 ## Expected Outcomes
 
 By the end of this lab, you will have:
-- A working local Dynamo deployment
-- Understanding of aggregated serving architecture
-- Baseline performance benchmarks
-- Experience with different backend engines
+- Your own namespace with a namespace-scoped Dynamo operator
+- A working Dynamo deployment serving a model via aggregated serving
+- Understanding of Kubernetes-based aggregated serving architecture
+- Experience with DynamoGraphDeployment CRD
+- Baseline performance benchmarks using AI-Perf
+- **(Optional)** Prometheus and Grafana monitoring stack with Dynamo dashboards
 
 ## Time Estimate
 
-~90 minutes
+- Main lab: ~90 minutes
+- Monitoring extension: +30 minutes (optional)
+
+## Key Concepts
+
+- **Namespace-scoped operator**: Dynamo operator that only manages resources in your namespace (safe for shared clusters)
+- **Aggregated serving**: All model layers on same GPU(s), simpler topology
+- **KV-cache routing**: Intelligent load balancing based on KV cache state
+- **DynamoGraphDeployment**: Kubernetes Custom Resource for defining inference deployments
 
 ## Next Lab
 
-Proceed to Lab 2 for Kubernetes deployment
+Proceed to Lab 2 for disaggregated serving and advanced configurations
 
